@@ -1,16 +1,14 @@
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class NextToJumpAPI {
 
-    private String dataFilePath = "Data/Sample.csv";
+    private final String dataFilePath = "Data/Sample.csv";
 
     public NextToJumpAPI() {}
 
@@ -26,7 +24,7 @@ public class NextToJumpAPI {
                 nextRaces.add(race);
             }
         }
-        Collections.sort(nextRaces, (r1, r2) -> r1.startTime.compareTo(r2.startTime));
+        nextRaces.sort(Comparator.comparing(r -> r.startTime));
 
         if (n >= nextRaces.size()) {
             return nextRaces;
@@ -39,6 +37,7 @@ public class NextToJumpAPI {
         try (BufferedReader br = new BufferedReader(new FileReader(this.dataFilePath))) {
             String line;
             br.readLine(); // skip header
+
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
 
@@ -55,9 +54,7 @@ public class NextToJumpAPI {
                         values[3],
                         LocalTime.parse(values[4], DateTimeFormatter.ofPattern("H.mm"))));
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return raceList;

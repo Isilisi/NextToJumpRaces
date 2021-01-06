@@ -6,5 +6,6 @@ public class Main {
 
         NextToJumpAPI ntj = new NextToJumpAPI();
         System.out.println(ntj.getNextRaces(LocalTime.parse("11:53"), 2));
+        System.out.println(ntj.getNextRaces());
     }
 }
